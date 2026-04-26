@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Công việc</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .btn-add { background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; }
+        .btn-edit { color: #2196F3; text-decoration: none; margin-right: 10px; }
+        .btn-delete { color: #f44336; text-decoration: none; }
+        .message { color: #2196F3; font-weight: bold; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<h2>Danh sách Công việc</h2>
+
+<div th:if="${message}" class="message">
+    <p th:text="${message}"></p>
+</div>
+
+<a th:href="@{/add}" class="btn-add">Thêm công việc mới</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nội dung</th>
+        <th>Ngày hết hạn</th>
+        <th>Trạng thái</th>
+        <th>Mức độ ưu tiên</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="t : ${todos}">
+        <td th:text="${t.id}"></td>
+        <td th:text="${t.content}"></td>
+        <td th:text="${t.dueDate}"></td>
+        <td th:text="${t.status}"></td>
+        <td th:text="${t.priority}"></td>
+        <td>
+            <a th:href="@{/edit/{id}(id=${t.id})}" class="btn-edit">Sửa</a>
+            <a th:href="@{/delete/{id}(id=${t.id})}"
+               class="btn-delete"
+               onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
