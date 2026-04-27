@@ -24,23 +24,15 @@ repositories {
 }
 
 dependencies {
-    // Spring Boot Starters
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-
-    // Lombok (Giúp code Entity gọn hơn)
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
-    // Driver kết nối MySQL
     runtimeOnly 'com.mysql:mysql-connector-j'
-
-    // Công cụ hỗ trợ dev (Tự động restart khi sửa code)
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
-    // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

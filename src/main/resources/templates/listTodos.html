@@ -2,37 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Danh sách Công việc</title>
+    <title>Todo List</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 30px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .btn-add { background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; }
-        .btn-edit { color: #2196F3; text-decoration: none; margin-right: 10px; }
-        .btn-delete { color: #f44336; text-decoration: none; }
-        .message { color: #2196F3; font-weight: bold; margin-bottom: 20px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 30px; background-color: #f8f9fa; }
+        .header-info { display: flex; justify-content: space-between; align-items: center; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #f1f3f5; color: #495057; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+
+        /* Style cho các nút bấm */
+        .btn { text-decoration: none; padding: 6px 12px; border-radius: 4px; font-size: 14px; display: inline-block; cursor: pointer; border: none; transition: 0.3s; }
+        .btn-add { background-color: #28a745; color: white; margin-bottom: 15px; padding: 10px 20px; }
+        .btn-edit { background-color: #ffc107; color: #212529; margin-right: 5px; }
+        .btn-delete { background-color: #dc3545; color: white; }
+        .btn:hover { opacity: 0.8; }
+
+        .lang-switch a { text-decoration: none; font-weight: bold; color: #007bff; margin-left: 10px; }
     </style>
 </head>
 <body>
 
-<h2>Danh sách Công việc</h2>
-
-<div th:if="${message}" class="message">
-    <p th:text="${message}"></p>
+<div class="header-info">
+    <h2 th:text="#{todo.title} + ' ' + ${session.ownerName}"></h2>
+    <div class="lang-switch">
+        <a href="?lang=vi">Tiếng Việt</a> |
+        <a href="?lang=en">English</a>
+    </div>
 </div>
 
-<a th:href="@{/add}" class="btn-add">Thêm công việc mới</a>
+<br>
+<a th:href="@{/add}" class="btn btn-add" th:text="#{todo.add}"></a>
 
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Nội dung</th>
-        <th>Ngày hết hạn</th>
-        <th>Trạng thái</th>
-        <th>Mức độ ưu tiên</th>
-        <th>Hành động</th>
+        <th th:text="#{todo.id}"></th>
+        <th th:text="#{todo.content}"></th>
+        <th th:text="#{todo.date}"></th>
+        <th th:text="#{todo.status}"></th>
+        <th th:text="#{todo.priority}"></th>
+        <th th:text="#{todo.action}"></th>
     </tr>
     </thead>
     <tbody>
@@ -43,10 +52,10 @@
         <td th:text="${t.status}"></td>
         <td th:text="${t.priority}"></td>
         <td>
-            <a th:href="@{/edit/{id}(id=${t.id})}" class="btn-edit">Sửa</a>
-            <a th:href="@{/delete/{id}(id=${t.id})}"
-               class="btn-delete"
-               onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">Xóa</a>
+            <a th:href="@{/edit/{id}(id=${t.id})}" class="btn btn-edit" th:text="#{todo.edit}"></a>
+            <a th:href="@{/delete/{id}(id=${t.id})}" class="btn btn-delete"
+               th:text="#{todo.delete}"
+               onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"></a>
         </td>
     </tr>
     </tbody>

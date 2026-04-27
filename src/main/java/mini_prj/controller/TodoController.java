@@ -1,5 +1,6 @@
 package mini_prj.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import mini_prj.model.entity.Todo;
 import mini_prj.repository.TodoRepository;
@@ -16,8 +17,26 @@ public class TodoController {
     @Autowired
     private TodoRepository todoRepository;
 
+    @GetMapping("/welcome")
+    public String showWelcome() {
+        return "welcome";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam String ownerName, HttpSession session) {
+        if (ownerName == null || ownerName.isBlank()) {
+            return "redirect:/welcome";
+        }
+        session.setAttribute("ownerName", ownerName);
+        return "redirect:/";
+    }
+
     @GetMapping("/")
-    public String list(Model model) {
+    public String list(Model model, HttpSession session) {
+        String owner = (String) session.getAttribute("ownerName");
+        if (owner == null) {
+            return "redirect:/welcome";
+        }
         model.addAttribute("todos", todoRepository.findAll());
         return "listTodos";
     }
@@ -30,26 +49,25 @@ public class TodoController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID không hợp lệ"));
+        Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ID"));
         model.addAttribute("todo", todo);
         return "insertTodo";
     }
 
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("todo") Todo todo, BindingResult result, RedirectAttributes ra) {
-        // Kiểm tra nếu có lỗi validation
         if (result.hasErrors()) {
-            return "insertTodo"; // Trả về form để hiển thị lỗi
+            return "insertTodo";
         }
         todoRepository.save(todo);
-        ra.addFlashAttribute("message", "Thao tác thành công");
+        ra.addFlashAttribute("message", "Thao tác thành công!");
         return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes ra) {
         todoRepository.deleteById(id);
-        ra.addFlashAttribute("message", "Xóa công việc thành công");
+        ra.addFlashAttribute("message", "Xóa thành công!");
         return "redirect:/";
     }
 }
